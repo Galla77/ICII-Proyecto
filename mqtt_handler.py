@@ -86,6 +86,5 @@ class MQTTHandler:
         self.client.publish("esp32/config", str(interval))
 
 # Instancia global compartida para que interaccione con las rutas de Flask
-# Usa la variable de entorno MQTT_BROKER si existe (para Docker), sino usa 10.1.6.2
-broker_ip = os.environ.get("MQTT_BROKER", "10.1.6.2")
+broker_ip = os.environ.get("MQTT_BROKER", "mosquitto")
 mqtt_client = MQTTHandler(broker=broker_ip, port=1883)

@@ -16,7 +16,8 @@ PASSWORD = "unraf2021"
 # MQTT
 # =========================
 
-MQTT_BROKER = "10.1.6.2"
+# ¡ATENCIÓN! Cambia esta IP por la IP real de tu Raspberry Pi
+MQTT_BROKER = "IP_DE_TU_RASPBERRY_PI"
 CLIENT_ID = "ESP32Client"
 
 TOPIC_PUB = b"sensor/dht11"
