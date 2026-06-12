@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto_broker
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    restart: unless-stopped
+
+  web:
+    build: .
+    container_name: flask_backend
+    ports:
+      - "5000:5000"
+    environment:
+      - MQTT_BROKER=mosquitto
+      # Las variables de Supabase se toman del .env automáticamente si está presente, 
+      # o se pueden inyectar desde aquí:
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_KEY=${SUPABASE_KEY}
+    depends_on:
+      - mosquitto
+    restart: unless-stopped
+    env_file:
+      - .env
+
+  esp32_simulator:
+    build: ./simulator
+    container_name: esp32_sim
+    environment:
+      - MQTT_BROKER=mosquitto
+    depends_on:
+      - mosquitto
+    restart: unless-stopped
